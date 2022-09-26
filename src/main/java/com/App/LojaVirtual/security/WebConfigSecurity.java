@@ -23,7 +23,7 @@ public class WebConfigSecurity implements HttpSessionListener {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/salvaAcesso", "/deletaAcesso");
+		return (web) -> web.ignoring().antMatchers("/salvaAcesso", "/deletaAcesso", "/buscarAcessoPorDesc");
 	}
 
 }
