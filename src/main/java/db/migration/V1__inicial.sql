@@ -774,7 +774,7 @@ ALTER TABLE public.venda_compra_loja_virt OWNER TO postgres;
 -- Data for Name: avaliacao_produto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.avaliacao_produto (id, descricao, nota, pessoa_id, produto_id) VALUES (1, 'avaliando produto teste', 10, 1, 1);
+INSERT INTO public.avaliacao_produto (id, descricao, nota, pessoa_id, produto_id);
 
 
 --
@@ -879,7 +879,7 @@ INSERT INTO public.avaliacao_produto (id, descricao, nota, pessoa_id, produto_id
 -- Data for Name: pessoa_fisica; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.pessoa_fisica (id, email, nome, telefone, cpf, data_nascimento) VALUES (1, 'pessoafisica@gmail.com', 'pessoa fisica', '31256165416', '15454454', '1991-05-01');
+INSERT INTO public.pessoa_fisica (id, email, nome, telefone, cpf, data_nascimento);
 
 
 --
@@ -896,7 +896,7 @@ INSERT INTO public.pessoa_fisica (id, email, nome, telefone, cpf, data_nasciment
 -- Data for Name: produto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.produto (id, alerta_estoque, altura, ativo, descricao, largura, link_youtube, nome, peso, profundidade, qtd_clique, qtd_estoque, qtd_estoque_alerta, tipo_unidade, valor_venda) VALUES (1, true, 15, true, 'produto teste', 20, 'linkdoyoutbube', 'nome do produto teste', 20.5, 15.48, 1, 1, 1, 'und', 50.10);
+INSERT INTO public.produto (id, alerta_estoque, altura, ativo, descricao, largura, link_youtube, nome, peso, profundidade, qtd_clique, qtd_estoque, qtd_estoque_alerta, tipo_unidade, valor_venda);
 
 
 --
