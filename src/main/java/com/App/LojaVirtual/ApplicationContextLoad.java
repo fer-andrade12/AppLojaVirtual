@@ -6,6 +6,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+
+/* Classe ajuda buscar alguma outra classe no contexto da aplicação ex: recuperar uma classe service ou repository..*/
+
 @Component
 public class ApplicationContextLoad implements ApplicationContextAware {
 	
@@ -14,7 +17,8 @@ public class ApplicationContextLoad implements ApplicationContextAware {
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
+		this.applicationContext = applicationContext; //aqui
+		
 		
 	}
 

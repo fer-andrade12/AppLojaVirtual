@@ -44,7 +44,7 @@ class LojaVirtualApplicationTests extends TestCase {
 		
 		Acesso acesso = new Acesso();
 		
-		acesso.setDescricao("ROLE_COMPRADOR");
+		acesso.setDescricao("ROLE_ADMINISTADOR");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		

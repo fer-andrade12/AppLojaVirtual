@@ -49,7 +49,6 @@ public class acessoController {
 		
 	}
 	
-
 	@ResponseBody 
 	@GetMapping("/obterAcesso/{id}")
 	public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) {

@@ -14,19 +14,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 /*Filtra todas as requisições serão capturadas para autenticar*/
-public class JWTApiAutenticacaoFilter extends GenericFilterBean{
+public class JWTApiAutenticacaoFilter extends GenericFilterBean {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		
+		try {
+		
+			/*Estabele a autenticao do user*/
+			
 
-		Authentication authentication = new JWTTokenAutenticacaoService()
-				.getAuthentication((HttpServletRequest)request, (HttpServletResponse)response);
+			Authentication authentication = new JWTTokenAutenticacaoService().
+					getAuthentication((HttpServletRequest) request, (HttpServletResponse) response);// aqui?			
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			
+			chain.doFilter(request, response);
 		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		chain.doFilter(request, response);
-		
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.getWriter().write("Ocorreu um erro no sistema, avise o administrador: \n" + e.getMessage());
+		}
 		
 	}
 

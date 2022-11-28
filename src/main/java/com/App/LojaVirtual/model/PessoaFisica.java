@@ -14,8 +14,6 @@ import javax.persistence.TemporalType;
 @PrimaryKeyJoinColumn(name="id")
 public class PessoaFisica extends Pessoa{
 	
-	private static final long serialVersionUID = 1L;
-	
 	@Column(nullable = false)
 	private String cpf;
 	

@@ -21,22 +21,16 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	public JWTLoginFilter(String url, AuthenticationManager authenticationManager) {
 
-		/* Obriga a autenticação por url */
 		super(new AntPathRequestMatcher(url));
 
-		/* Gerador de autenticação */
 		setAuthenticationManager(authenticationManager);
 	}
 
-	/* Retorna usuario ao processar a autenticação */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
-		/* Obtem usuário */
 		Usuario user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-
-		/* Retorna user com login e senha */
 
 		return getAuthenticationManager()
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getSenha()));
