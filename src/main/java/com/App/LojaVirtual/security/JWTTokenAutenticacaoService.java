@@ -20,7 +20,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 
-
 // Cria a autenticação e retorna também a autenticação JWT 
 @Service
 @Component
@@ -36,9 +35,8 @@ public class JWTTokenAutenticacaoService {
 
 	public void addAuthentication(HttpServletResponse response, String username) throws Exception {
 
-		String JWT = Jwts.builder()
-				.setSubject(username)
-				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) 
+		String JWT = Jwts.builder().setSubject(username)
+				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
 
 		String token = TOKEN_PREFIX + " " + JWT;
@@ -46,56 +44,49 @@ public class JWTTokenAutenticacaoService {
 		response.addHeader(HEADER_STRING, token);
 
 		liberaCors(response);
-		
+
 		response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
 
 	}
-	
-	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
+
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+
 		String token = request.getHeader(HEADER_STRING);
-		
+
 		try {
-			
-			if(token != null) {
-				
+
+			if (token != null) {
+
 				String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
-				
-				String user = Jwts.parser()
-						.setSigningKey(SECRET)
-						.parseClaimsJws(tokenLimpo)
-						.getBody()
-						.getSubject();
-				
+
+				String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(tokenLimpo).getBody().getSubject();
+
 				if (user != null) {
-					Usuario usuario = ApplicationContextLoad
-							.getApplicationContext()
-							.getBean(UsuarioRepository.class)
+					Usuario usuario = ApplicationContextLoad.getApplicationContext().getBean(UsuarioRepository.class)
 							.findUserByLogin(user);
-					
-					if(usuario != null) {
-						return new UsernamePasswordAuthenticationToken(
-								usuario.getLogin(), 
-								usuario.getPassword(), 
+
+					if (usuario != null) {
+						return new UsernamePasswordAuthenticationToken(usuario.getLogin(), usuario.getPassword(),
 								usuario.getAuthorities());
 					}
-					
+
 				}
-				
+
 			}
-		}catch (SignatureException e) {
+		} catch (SignatureException e) {
 			response.getWriter().write("Token está inválido.");
 
-		}catch (ExpiredJwtException e) {
+		} catch (ExpiredJwtException e) {
 			response.getWriter().write("Token está expirado, efetue o login novamente.");
-		}finally {
+		} finally {
 			liberaCors(response);
 		}
 		return null;
-		
+
 	}
 
-	/* Faz a liberação de cors no navegador para evitar problema de cors*/
+	/* Faz a liberação de cors no navegador para evitar problema de cors */
 	private void liberaCors(HttpServletResponse response) {
 		if (response.getHeader("Access-Control-Allow-Origin") == null) {
 			response.addHeader("Access-Control-Allow-Origin", "*");
