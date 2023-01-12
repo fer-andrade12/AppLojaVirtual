@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.App.LojaVirtual.ExceptionLojaVirtual;
 import com.App.LojaVirtual.model.Acesso;
 import com.App.LojaVirtual.repository.AcessoRepository;
 import com.App.LojaVirtual.service.AcessoService;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
 @Controller
 @RestController
@@ -31,7 +33,17 @@ public class acessoController {
 	
 	@ResponseBody /* Poder dar um retorno da API */
 	@PostMapping("/salvaAcesso") /* Mapeiando a url para receber o JSON*/
-	public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) { /* Recebe o JSON e transforma em objeto */
+	public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) throws ExceptionLojaVirtual { /* Recebe o JSON e transforma em objeto */
+		
+		if (acesso.getId() == null) {
+			
+			List<Acesso> acessos = acessoRepository.buscaAcessoDesc(acesso.getDescricao().toUpperCase());
+			
+			 if(!acessos.isEmpty()) { 
+				 throw new ExceptionLojaVirtual("Já existe acesso com descrição " + acesso.getDescricao());
+			}
+			
+		}
 		
 		Acesso response = acessoService.save(acesso);
 		
@@ -51,11 +63,15 @@ public class acessoController {
 	
 	@ResponseBody 
 	@GetMapping("/obterAcesso/{id}")
-	public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) {
+	public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) throws ExceptionLojaVirtual {
 		
-		Acesso acesso = acessoRepository.findById(id).get();
+		Acesso acesso = acessoRepository.findById(id).orElse(null);
 		
-		return new ResponseEntity<Acesso>(HttpStatus.OK);
+		if(acesso == null) {
+			throw new ExceptionLojaVirtual("Não encontrou acesso com id: " + id);
+		}
+		
+		return new ResponseEntity<Acesso>( acesso ,HttpStatus.OK);
 		
 	}
 	
@@ -65,7 +81,7 @@ public class acessoController {
 		
 		List<Acesso> acessos = acessoRepository.buscaAcessoDesc(desc);
 		
-		return new ResponseEntity <List<Acesso>>(HttpStatus.OK);
+		return new ResponseEntity <List<Acesso>>(acessos, HttpStatus.OK);
 		
 	}
 	

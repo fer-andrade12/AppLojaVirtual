@@ -18,16 +18,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.App.LojaVirtual.model.objetoErroDTO.ObjetoErroDTO;
 
+/* Capitura excecoes do projeto*/
 @RestControllerAdvice
 @ControllerAdvice
 public class ControleExcecoes extends ResponseEntityExceptionHandler{
 	
-	/* Capitura excecoes do projeto*/
+	// exceção customisada
+	@ExceptionHandler(ExceptionLojaVirtual.class)
+	public ResponseEntity<Object> HandleExceptionCustom(ExceptionLojaVirtual ex) {
+		
+		ObjetoErroDTO objetoErroDto = new ObjetoErroDTO();
+		
+		objetoErroDto.setErro(ex.getMessage());
+		objetoErroDto.setCode(HttpStatus.OK.toString());
+		
+		return new ResponseEntity<Object>(objetoErroDto, HttpStatus.OK);
+		
+	}
+	
+	
+	/* Capitura excecoes handleExceptionInternal*/
 	@ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		
+		// Objeto erro DTO para usar dados temporário para essa exceções
 		ObjetoErroDTO objetoErroDto = new ObjetoErroDTO();
 
 		String msg ="";
@@ -50,8 +66,11 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<Object>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	
+	/* Capitura excecoes HandleExceptionDataIntegry*/
 	@ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class})
 	protected ResponseEntity<Object> HandleExceptionDataIntegry(Exception ex) {
+		
 		ObjetoErroDTO objetoErroDto = new ObjetoErroDTO();
 
 		String msg ="";
