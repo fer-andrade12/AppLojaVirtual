@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +41,7 @@ public class acessoController {
 			List<Acesso> acessos = acessoRepository.buscaAcessoDesc(acesso.getDescricao().toUpperCase());
 			
 			 if(!acessos.isEmpty()) { 
-				 throw new ExceptionLojaVirtual("Já existe acesso com descrição " + acesso.getDescricao());
+				 throw new ExceptionLojaVirtual("Já existe acesso com essa descrição " + acesso.getDescricao());
 			}
 			
 		}
@@ -77,9 +78,13 @@ public class acessoController {
 	
 	@ResponseBody 
 	@GetMapping("/buscarAcessoPorDesc/{desc}")
-	public ResponseEntity<List<Acesso>> buscarAcessoPorDesc(@PathVariable("desc") String desc) {
+	public ResponseEntity<List<Acesso>> buscarAcessoPorDesc(@PathVariable("desc") String desc) throws ExceptionLojaVirtual {
 		
 		List<Acesso> acessos = acessoRepository.buscaAcessoDesc(desc);
+		
+		if(acessos == null) {
+			throw new ExceptionLojaVirtual("Não encontrou acesso com descrição : " + desc);
+		}
 		
 		return new ResponseEntity <List<Acesso>>(acessos, HttpStatus.OK);
 		

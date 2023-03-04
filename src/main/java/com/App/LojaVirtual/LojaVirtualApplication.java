@@ -18,7 +18,6 @@ public class LojaVirtualApplication {
 		SpringApplication.run(LojaVirtualApplication.class, args);
 		
 		// senha criptografada atualmente salva no banco usuario 
-		// $2a$10$buSqJVxJaSDEav9NenMw1OOrwNLptLXU67bIZm4uxQILKyTef5n/a
 		//System.out.println(new BCryptPasswordEncoder().encode("123"));
 	}
 	

@@ -43,7 +43,6 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		
-		// Objeto erro DTO para usar dados temporário para essa exceções
 		ObjetoErroDTO objetoErroDto = new ObjetoErroDTO();
 
 		String msg ="";
